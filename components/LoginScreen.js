@@ -12,6 +12,7 @@ export default function LoginScreen({navigation}){
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('')
     const [showPass, setShowPass] = useState(false)
+    const [msgColor, setMsgColor] = useState(true)
     // definir constantes para la autenticación
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app)
@@ -20,10 +21,12 @@ export default function LoginScreen({navigation}){
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential)=>{
             //console.log(userCredential.user.providerData)
+            setMsgColor(true)
             setMessage("Cuenta creada correctamente ...")
         })
         .catch((error)=>{
             ///console.log(error.message)
+            setMsgColor(false)
             setMessage("Error al crear la cuenta... Inténtelo de nuevo")
         })
     }
@@ -36,6 +39,7 @@ export default function LoginScreen({navigation}){
         })
         .catch((error)=>{
             console.log(error.message)
+            setMessage("usuario o contraseña invalido...")
         })
     }
 
@@ -77,7 +81,7 @@ export default function LoginScreen({navigation}){
                 >
                     Crear Cuenta
                 </Button>
-                <Text style={{color:'green'}}>{message}</Text>
+                <Text style={{marginTop: 5, color: msgColor ? "green" : "red"}}>{message}</Text>
             </View>
         </View>
     );
